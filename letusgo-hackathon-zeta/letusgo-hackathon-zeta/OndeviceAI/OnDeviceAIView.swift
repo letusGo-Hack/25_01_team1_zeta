@@ -14,7 +14,7 @@ final class OnDeviceAIVM: ObservableObject {
         case fairy
     }
     
-    private let character: Character
+    private(set) var character: Character
     init(character: Character) {
         self.character = character
     }
@@ -60,6 +60,9 @@ struct OnDeviceAIView: View {
       InputField
         .padding()
     }
+    .background {
+        BackgroundBlurView
+    }
   }
 }
 
@@ -93,11 +96,12 @@ private extension OnDeviceAIView {
       .contentTransition(.opacity)
     }
     .animation(.easeInOut, value: vm.messages)
+    
   }
   
   var InputField: some View {
     HStack(spacing: 12) {
-      TextField("연애 고민을 말해줘 😍", text: $messageText)
+      TextField("그 사람, 나한테 관심 있을까?", text: $messageText)
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
         .foregroundColor(.black)
@@ -121,6 +125,34 @@ private extension OnDeviceAIView {
     .glassEffect(.regular.tint(.purple.opacity(0.3)).interactive())
     .disabled(messageText.isEmpty)
   }
+    
+    /// 배경
+    private var BackgroundBlurView: some View {
+        VStack {
+            switch vm.character {
+            case .female:
+                Color.pink.opacity(0.5)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+            case .male:
+                Color.blue.opacity(0.5)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+            case .fairy:
+                Color.green.opacity(0.5)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+            }
+            
+        }
+        .ignoresSafeArea()
+    }
 }
 
 #Preview {

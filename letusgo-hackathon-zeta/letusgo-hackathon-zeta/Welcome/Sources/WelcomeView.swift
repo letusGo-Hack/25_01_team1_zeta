@@ -24,10 +24,12 @@ struct WelcomeView: View {
                     switch character {
                     case .male:
                         OnDeviceAIView(character: .male)
+                            .navigationTitle(character.displayText)
                             .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .female:
                         OnDeviceAIView(character: .female)
+                            .navigationTitle(character.displayText)
                             .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .fairy:
