@@ -48,19 +48,27 @@ enum InAppPurchaseFeature {
             }
         }
     }
+    
+    enum PurchaseError: Error {
+        
+    }
 }
 
 final class InAppPurchaseViewModel: ObservableObject {
+    typealias PurchaseError = InAppPurchaseFeature.PurchaseError
     
     /// 상품정보
     @Published var products = InAppPurchaseFeature.Product.allCases
     
     enum Action {
         case view(ViewAction)
+        case purchaseError(PurchaseError)
         
         enum ViewAction {
             case buyButtonTapped
         }
+        
+        
     }
     
     func send(action: Action) {
@@ -70,6 +78,9 @@ final class InAppPurchaseViewModel: ObservableObject {
             case .buyButtonTapped:
                 handleBuyButtonTapped()
             }
+        case let .purchaseError(error):
+            break
+            
         }
     }
     
