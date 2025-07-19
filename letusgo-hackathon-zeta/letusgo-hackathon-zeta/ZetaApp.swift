@@ -12,7 +12,8 @@ struct ZetaApp: App {
     var body: some Scene {
         WindowGroup {
 //            ContentView()
-            ChatFeature()
+//            ChatFeature()
+            InAppPurchaseView()
         }
     }
     

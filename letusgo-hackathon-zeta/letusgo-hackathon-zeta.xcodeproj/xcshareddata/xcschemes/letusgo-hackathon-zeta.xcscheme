@@ -75,7 +75,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../letusgo-hackathon-zeta/RevenueCatSDK/Resources/StoreKitConfiguration.storekit">
+         identifier = "../../../../../Library/Developer/Xcode/DerivedData/letusgo-hackathon-zeta-goydmpcyvkdnzpeknpdmbezzdwmn/SourcePackages/checkouts/purchases-ios/Examples/SampleCat/SampleCatStoreKitConfiguration.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
