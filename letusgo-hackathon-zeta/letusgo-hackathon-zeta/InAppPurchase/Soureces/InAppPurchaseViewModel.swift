@@ -14,6 +14,7 @@ import RevenueCatUI
 @MainActor
 final class InAppPurchaseViewModel: ObservableObject {
     typealias PurchaseError = InAppPurchaseFeature.PurchaseError
+    typealias Action = InAppPurchaseFeature.Action
     typealias State = InAppPurchaseFeature.State
     typealias ObservedEvent = InAppPurchaseFeature.ObservedEvent
     
@@ -36,27 +37,6 @@ final class InAppPurchaseViewModel: ObservableObject {
     
     /// 상태
     private(set) var state = State()
-    
-    enum Action {
-        case view(ViewAction)
-        case purchaseResult(Result<Void, PurchaseError>)
-        case alert(AlertAction)
-        
-        enum ViewAction {
-            case buyButtonTapped
-            case alert(AlertAction)
-            
-            enum AlertAction {
-                case purchaseSuccess
-                case purchaseFailure
-            }
-        }
-        
-        enum AlertAction {
-            case showsPurchaseSuccess
-            case showsPurchaseFailure
-        }
-    }
     
     func send(action: Action.ViewAction) {
         send(action: .view(action))
