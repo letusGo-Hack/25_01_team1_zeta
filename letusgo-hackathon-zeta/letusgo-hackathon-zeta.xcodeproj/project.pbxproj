@@ -10,6 +10,7 @@
 		1AA7988D2E2B2E3C00637994 /* ReceiptParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7988C2E2B2E3C00637994 /* ReceiptParser */; };
 		1AA7988F2E2B2E3C00637994 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7988E2E2B2E3C00637994 /* RevenueCat */; };
 		1AA798912E2B2E3C00637994 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798902E2B2E3C00637994 /* RevenueCatUI */; };
+		1AA798C62E2B3ABF00637994 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA798C52E2B3ABF00637994 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,11 +34,25 @@
 		1AA7982A2E2B296D00637994 /* letusgo-hackathon-zeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "letusgo-hackathon-zeta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA798372E2B296F00637994 /* letusgo-hackathon-zetaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "letusgo-hackathon-zetaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA798412E2B296F00637994 /* letusgo-hackathon-zetaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "letusgo-hackathon-zetaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AA798C52E2B3ABF00637994 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1AA798C32E2B392600637994 /* Exceptions for "letusgo-hackathon-zeta" folder in "letusgo-hackathon-zeta" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1AA798292E2B296D00637994 /* letusgo-hackathon-zeta */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1AA7982C2E2B296D00637994 /* letusgo-hackathon-zeta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1AA798C32E2B392600637994 /* Exceptions for "letusgo-hackathon-zeta" folder in "letusgo-hackathon-zeta" target */,
+			);
 			path = "letusgo-hackathon-zeta";
 			sourceTree = "<group>";
 		};
@@ -61,6 +76,7 @@
 				1AA7988F2E2B2E3C00637994 /* RevenueCat in Frameworks */,
 				1AA7988D2E2B2E3C00637994 /* ReceiptParser in Frameworks */,
 				1AA798912E2B2E3C00637994 /* RevenueCatUI in Frameworks */,
+				1AA798C62E2B3ABF00637994 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +103,7 @@
 				1AA7982C2E2B296D00637994 /* letusgo-hackathon-zeta */,
 				1AA7983A2E2B296F00637994 /* letusgo-hackathon-zetaTests */,
 				1AA798442E2B296F00637994 /* letusgo-hackathon-zetaUITests */,
+				1AA798C42E2B3ABF00637994 /* Frameworks */,
 				1AA7982B2E2B296D00637994 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,6 +116,14 @@
 				1AA798412E2B296F00637994 /* letusgo-hackathon-zetaUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1AA798C42E2B3ABF00637994 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1AA798C52E2B3ABF00637994 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,6 +437,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "letusgo-hackathon-zeta/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -443,6 +469,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "letusgo-hackathon-zeta/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

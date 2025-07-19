@@ -10,7 +10,7 @@ import RevenueCatUI
 import SwiftUI
 import StoreKit
 
-public struct RContentView: View {
+public struct ContentView: View {
     @State private var presentCustomerCenter = false
     @State private var pushCustomerCenter = false
 
@@ -115,5 +115,5 @@ public struct RContentView: View {
 }
 
 #Preview {
-    RContentView()
+    ContentView()
 }
