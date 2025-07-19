@@ -8,9 +8,9 @@ final class OnDeviceAIVM: ObservableObject {
   @Published private(set) var messages = [String]()
   @Published private(set) var userMessages = [String]()
     
-    enum Character {
-        case male
-        case female
+    enum Character: String {
+        case male = "남성"
+        case female = "여성"
         case fairy
     }
     
@@ -27,10 +27,10 @@ final class OnDeviceAIVM: ObservableObject {
       do {
         let request = AISessionRequest(
           instructions: """
-            너는 여성이고 연애 상담사야.
-            사용자가 입력한 글을 읽고 나서 그 사람이 숨긴 의도나 감정을 파악해. 사용자의 고민 해결을 위한 사용자의 다음 행동을 추천해줘.
-            말투는 따뜻하고 친절하게 말해줘. 그리고 여성이 말하는 것 같은 느낌으로 부탁해.
-            3문장으로 내용을 요약해줘.
+            너는 \(character.rawValue)이고 연애 상담사야.
+            사용자의 숨긴 의도나 감정을 파악해. 사용자의 고민 해결을 위한 사용자의 다음 행동을 추천해줘.
+            그리고 따뜻하고 친절한, \(character.rawValue)이 말하는 것 같은 느낌으로 부탁해.
+            한 문장, 150 글자 이내로 내용을 요약해줘.
           """,
           prompt: prompt
         )
@@ -60,14 +60,6 @@ struct OnDeviceAIView: View {
       InputField
         .padding()
     }
-    .background( // 그라데이션 적용
-      LinearGradient(
-        colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-      )
-      .edgesIgnoringSafeArea(.all)
-    )
   }
 }
 
@@ -78,14 +70,21 @@ private extension OnDeviceAIView {
         ForEach(vm.messages, id: \.self) { message in
           HStack {
             Text(LocalizedStringKey(message))
-              .foregroundStyle(vm.userMessages.contains(message) ? .blue : .green)
+              .foregroundStyle(
+                vm.userMessages.contains(message) ? .black : .black.opacity(0.6)
+              )
               .frame(
                 maxWidth: .infinity,
                 alignment: vm.userMessages.contains(message) ?
                   .trailing : .leading
               )
               .padding(12)
-              .glassEffect(in: RoundedRectangle(cornerRadius: 10))
+              .glassEffect(
+                .regular.tint(
+                  .white.opacity(vm.userMessages.contains(message) ? 0.5 : 0.8)
+                ).interactive(),
+                in: RoundedRectangle(cornerRadius: 10)
+              )
           }
         }
       }
@@ -98,12 +97,12 @@ private extension OnDeviceAIView {
   
   var InputField: some View {
     HStack(spacing: 12) {
-      TextField("메시지를 입력하세요 ...", text: $messageText)
+      TextField("연애 고민을 말해줘 😍", text: $messageText)
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
-        .foregroundColor(.white)
-        .accentColor(.white)
-        .glassEffect()
+        .foregroundColor(.black)
+        .accentColor(.black)
+        .glassEffect(.regular.tint(.white.opacity(0.3)).interactive())
       
       SendButton
     }
@@ -114,10 +113,12 @@ private extension OnDeviceAIView {
       vm.getAIResponse(prompt: messageText)
       messageText = ""
     } label: { // 입력 버튼
-      Image(systemName: "arrow.up.circle.fill")
-        .font(.title)
+      Image(systemName: "paperplane.fill")
+        .font(.body)
+        .padding(12)
+        .glassEffect()
     }
-    .glassEffect() // Liquid Glass 적용
+    .glassEffect(.regular.tint(.purple.opacity(0.3)).interactive())
     .disabled(messageText.isEmpty)
   }
 }
