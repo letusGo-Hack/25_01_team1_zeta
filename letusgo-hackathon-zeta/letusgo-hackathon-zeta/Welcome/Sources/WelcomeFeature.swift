@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Combine
 
 enum WelcomeFeature {
     
@@ -38,17 +39,33 @@ enum WelcomeFeature {
             }
         }
     }
+    
+    enum ObservedEvent {
+        case path(NavigationDestination)
+    }
 }
 
 @MainActor
 final class WelcomeViewModel: ObservableObject {
     typealias Action = WelcomeFeature.Action
     typealias State = WelcomeFeature.State
+    typealias ObservedEvent = WelcomeFeature.ObservedEvent
+    
+    private let continuation: AsyncStream<ObservedEvent>.Continuation
+    let stream: AsyncStream<ObservedEvent>
     
     /// 캐릭터 정보
-    @Published var characters = State.Character.allCases
+    @Published var characters: State.Character.AllCases
     
     private(set) var state = State()
+    
+    init() {
+        let (stream, continuation) = AsyncStream<ObservedEvent>.makeStream()
+        self.stream = stream
+        self.continuation = continuation
+        
+        self.characters = State.Character.allCases
+    }
     
     func send(action: Action.ViewAction) {
         send(action: .view(action))
@@ -57,12 +74,28 @@ final class WelcomeViewModel: ObservableObject {
     private func send(action: Action) {
         switch action {
         case let .view(viewAction):
-            break
+            switch viewAction {
+            case let .characterTapped(character):
+                handleCharacterTapped(character)
+            }
+        }
+    }
+    
+    private func handleCharacterTapped(_ character: State.Character) {
+        switch character {
+        case .female:
+            continuation.yield(.path(.chat))
+        case .male:
+            continuation.yield(.path(.chat))
+        case .fairy:
+            continuation.yield(.path(.inAppPurchase))
         }
     }
 }
 
 struct WelcomeView: View {
+    @EnvironmentObject var navigationPathStore: NavigationPathStore
+    
     @StateObject var viewModel = WelcomeViewModel()
     
     var body: some View {
@@ -76,6 +109,14 @@ struct WelcomeView: View {
             }
         }
         .ignoresSafeArea()
+        .task {
+            for await event in viewModel.stream {
+                switch event {
+                case let .path(path):
+                    navigationPathStore.path.append(path)
+                }
+            }
+        }
     }
     
     /// 카드 뷰
@@ -90,4 +131,9 @@ struct WelcomeView: View {
 
 #Preview {
     WelcomeView()
+}
+
+enum NavigationDestination: Hashable {
+    case chat
+    case inAppPurchase
 }

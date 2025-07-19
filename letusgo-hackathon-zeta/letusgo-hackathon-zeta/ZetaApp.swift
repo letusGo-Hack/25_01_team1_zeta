@@ -6,19 +6,38 @@
 //
 
 import SwiftUI
+import Combine
+
+class NavigationPathStore: ObservableObject {
+    @Published var path: [NavigationDestination] = []
+}
 
 @main
 struct ZetaApp: App {
+    @StateObject private var navigationPathStore = NavigationPathStore()
+    
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//            ChatFeature()
-            MyView()
+            NavigationStack(path: $navigationPathStore.path) {
+                WelcomeView()
+                    .environmentObject(navigationPathStore)
+            }
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                switch destination {
+                case .chat:
+                    EmptyView()
+                case .inAppPurchase:
+                    InAppPurchaseView()
+                        .environmentObject(navigationPathStore)
+                }
+            }
+//            .environmentObject(navigationPathStore)
         }
+        
     }
     
     init() {
-        RevenueCatFeature.configure()
+//        RevenueCatFeature.configure()
     }
 }
 
