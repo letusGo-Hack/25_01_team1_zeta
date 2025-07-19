@@ -21,11 +21,11 @@ struct WelcomeView: View {
                 NavigationLink {
                     switch character {
                     case .male:
-                        ChatFeature()
+                        OnDeviceAIView(character: .male)
                             .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .female:
-                        ChatFeature()
+                        OnDeviceAIView(character: .female)
                             .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .fairy:

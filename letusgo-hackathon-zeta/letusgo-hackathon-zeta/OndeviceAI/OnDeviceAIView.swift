@@ -7,7 +7,18 @@ import Combine
 final class OnDeviceAIVM: ObservableObject {
   @Published private(set) var messages = [String]()
   @Published private(set) var userMessages = [String]()
-  
+    
+    enum Character {
+        case male
+        case female
+        case fairy
+    }
+    
+    private let character: Character
+    init(character: Character) {
+        self.character = character
+    }
+    
   func getAIResponse(prompt: String) {
     userMessages.append(prompt)
     messages.append(prompt)
@@ -34,8 +45,12 @@ final class OnDeviceAIVM: ObservableObject {
 }
 
 struct OnDeviceAIView: View {
-  @StateObject private var vm = OnDeviceAIVM()
-  
+    @StateObject private var vm: OnDeviceAIVM
+
+    init(character: OnDeviceAIVM.Character) {
+        _vm = StateObject(wrappedValue: OnDeviceAIVM(character: character))
+    }
+    
   @State private var messageText = ""
   
   var body: some View {
@@ -109,6 +124,6 @@ private extension OnDeviceAIView {
 
 #Preview {
   NavigationStack {
-    OnDeviceAIView()
+      OnDeviceAIView(character: .male)
   }
 }
