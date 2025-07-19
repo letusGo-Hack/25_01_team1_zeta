@@ -17,32 +17,9 @@ struct ZetaApp: App {
                 WelcomeView()
             }
         }
-        
     }
     
     init() {
 //        RevenueCatFeature.configure()
-    }
-}
-
-struct MyView: View {
-    @State private var isNavigating = false
-
-    var body: some View {
-        NavigationStack {
-            VStack {
-                Button("구매 화면으로 이동") {
-                    isNavigating = true
-                }
-
-                NavigationLink(
-                    destination: InAppPurchaseView(),
-                    isActive: $isNavigating
-                ) {
-                    EmptyView()
-                }
-            }
-            .navigationTitle("메인 화면")
-        }
     }
 }
