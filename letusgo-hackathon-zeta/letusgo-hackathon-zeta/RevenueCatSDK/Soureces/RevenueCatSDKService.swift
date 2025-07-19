@@ -114,6 +114,8 @@ public struct ContentView: View {
      }
 }
 
-#Preview {
-    ContentView()
-}
+<<<<<<< HEAD
+//#Preview {
+//    ContentView()
+//}
+>>>>>>> main
