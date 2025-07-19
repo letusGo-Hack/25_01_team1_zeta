@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1AA7986F2E2B2B6C00637994 /* ReceiptParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7986E2E2B2B6C00637994 /* ReceiptParser */; };
+		1AA798712E2B2B6C00637994 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798702E2B2B6C00637994 /* RevenueCat */; };
+		1AA798732E2B2B6C00637994 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798722E2B2B6C00637994 /* RevenueCatUI */; };
+		1AA798752E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		1AA798382E2B296F00637994 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +59,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AA798712E2B2B6C00637994 /* RevenueCat in Frameworks */,
+				1AA7986F2E2B2B6C00637994 /* ReceiptParser in Frameworks */,
+				1AA798732E2B2B6C00637994 /* RevenueCatUI in Frameworks */,
+				1AA798752E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +123,10 @@
 			);
 			name = "letusgo-hackathon-zeta";
 			packageProductDependencies = (
+				1AA7986E2E2B2B6C00637994 /* ReceiptParser */,
+				1AA798702E2B2B6C00637994 /* RevenueCat */,
+				1AA798722E2B2B6C00637994 /* RevenueCatUI */,
+				1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */,
 			);
 			productName = "letusgo-hackathon-zeta";
 			productReference = 1AA7982A2E2B296D00637994 /* letusgo-hackathon-zeta.app */;
@@ -195,6 +210,9 @@
 			);
 			mainGroup = 1AA798212E2B296D00637994;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA7982B2E2B296D00637994 /* Products */;
 			projectDirPath = "";
@@ -570,6 +588,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.33.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1AA7986E2E2B2B6C00637994 /* ReceiptParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = ReceiptParser;
+		};
+		1AA798702E2B2B6C00637994 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+		1AA798722E2B2B6C00637994 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCatUI;
+		};
+		1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat_CustomEntitlementComputation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1AA798222E2B296D00637994 /* Project object */;
 }
