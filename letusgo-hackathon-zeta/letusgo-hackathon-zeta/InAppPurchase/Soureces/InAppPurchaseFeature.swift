@@ -85,7 +85,7 @@ final class InAppPurchaseViewModel: ObservableObject {
             
             do {
                 _ = try await Purchases.shared.purchase(product: product)
-            } catch {
+            } catch let error {
                 // handle error
             }
         }
@@ -97,13 +97,33 @@ struct InAppPurchaseView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
+            Image(.foundationmodel)
+                .resizable()
+                .frame(width: 256, height: 256)
             
             Spacer()
             
             BuyButton
+            
         }
-        .navigationTitle("인앱결제")
-        .navigationBarTitleDisplayMode(.inline)
+        .background {
+            VStack {
+                Image(.foundationmodel)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 1000, height: 1000, alignment: .center)
+//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .clipped()
+                    .blur(radius: 30)
+                    .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+                
+                Spacer()
+            }
+            .ignoresSafeArea()
+        }
+        .navigationTitle("RevenueCatSDK")
     }
     
     /// 인앱 결제 버튼
@@ -112,10 +132,13 @@ struct InAppPurchaseView: View {
             viewModel.send(action: .view(.buyButtonTapped))
         } label: {
             Text("구매하기")
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                .glassEffect()
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
         }
-        .padding()
-        .containerRelativeFrame(.horizontal)
-        .glassEffect()
     }
 }
 
