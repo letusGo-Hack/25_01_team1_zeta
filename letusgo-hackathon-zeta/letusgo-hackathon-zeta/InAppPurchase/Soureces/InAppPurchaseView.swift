@@ -12,9 +12,7 @@ struct InAppPurchaseView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack(alignment: .leading) {
-            //            Spacer()
-            //
+        VStack(alignment: .leading, spacing: 24) {
             Text("LLM 기반 감정 이해")
                 .font(.title)
             
@@ -30,10 +28,8 @@ struct InAppPurchaseView: View {
                 )
             }
             
-            
             Text("Apple Intelligence 연동")
                 .font(.title)
-            
             
             HStack {
                 Image(.appleIntelligence)
@@ -47,13 +43,26 @@ struct InAppPurchaseView: View {
                 )
             }
             
+            Text("요정 연애 코치")
+                .font(.title)
+            
+            HStack {
+                Text("🧚")
+                    .font(.system(size: 256 / 4)) // 원하는 크기로 조절
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    당신의 마음을 이해하고 애플 인텔리전스와 AI가 함께하는 따뜻하고 스마트한 연애 코칭 요정입니다.
+                    """
+                )
+            }
             
             Spacer()
-            
             BuyButton
             
         }
-        .padding(.leading, 24)
+        .padding(.horizontal, 24)
         .background {
             BackgroundBlurView
         }
