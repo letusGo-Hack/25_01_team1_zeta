@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct ZetaApp: App {
+    
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//            ChatFeature()
-            MyView()
+            NavigationView {
+                WelcomeView()
+            }
         }
+        
     }
     
     init() {
-        RevenueCatFeature.configure()
+//        RevenueCatFeature.configure()
     }
 }
 
@@ -32,7 +35,6 @@ struct MyView: View {
                     isNavigating = true
                 }
 
-                // 숨겨진 NavigationLink (조건부 네비게이션용)
                 NavigationLink(
                     destination: InAppPurchaseView(),
                     isActive: $isNavigating

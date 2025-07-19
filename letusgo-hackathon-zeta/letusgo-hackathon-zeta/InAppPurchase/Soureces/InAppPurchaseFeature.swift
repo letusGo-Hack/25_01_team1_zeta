@@ -11,6 +11,61 @@ import RevenueCat
 
 enum InAppPurchaseFeature {
     
+    /// 상태
+    struct State {
+        /// 구매 알럿
+        var purchaseAlert: PurchaseAlert? = nil
+        
+        struct PurchaseAlert {
+            var failure: Failure?
+            var success: Success?
+            
+            struct Failure {
+                var title: String
+                var message: String
+            }
+            
+            struct Success {
+                var title: String
+                var message: String
+            }
+        }
+        
+        func copy(
+            purchaseAlert: PurchaseAlert? = nil
+        ) -> State {
+            State(
+                purchaseAlert: purchaseAlert ?? self.purchaseAlert
+            )
+        }
+    }
+    
+    enum Action {
+        case view(ViewAction)
+        case purchaseResult(Result<Void, PurchaseError>)
+        case alert(AlertAction)
+        
+        enum ViewAction {
+            case buyButtonTapped
+            case alert(AlertAction)
+            
+            enum AlertAction {
+                case purchaseSuccess
+                case purchaseFailure
+            }
+        }
+        
+        enum AlertAction {
+            case showsPurchaseSuccess
+            case showsPurchaseFailure
+        }
+    }
+    
+    
+    enum ObservedEvent {
+        case dismiss
+    }
+    
     /// 상품
     enum Product: CaseIterable {
         case weekly
@@ -52,39 +107,5 @@ enum InAppPurchaseFeature {
         case failedFetched
         case failedPurchase
     }
-    
-    /// 상태
-    struct State {
-        /// 구매 알럿
-        var purchaseAlert: PurchaseAlert? = nil
-        
-        struct PurchaseAlert {
-            var failure: Failure?
-            var success: Success?
-            
-            struct Failure {
-                var title: String
-                var message: String
-            }
-            
-            struct Success {
-                var title: String
-                var message: String
-            }
-        }
-        
-        func copy(
-            purchaseAlert: PurchaseAlert? = nil
-        ) -> State {
-            State(
-                purchaseAlert: purchaseAlert ?? self.purchaseAlert
-            )
-        }
-    }
-    
-    enum ObservedEvent {
-        case dismiss
-    }
-    
 }
 
