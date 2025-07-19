@@ -8,30 +8,14 @@
 import SwiftUI
 import Combine
 
-class NavigationPathStore: ObservableObject {
-    @Published var path: [NavigationDestination] = []
-}
-
 @main
 struct ZetaApp: App {
-    @StateObject private var navigationPathStore = NavigationPathStore()
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $navigationPathStore.path) {
+            NavigationView {
                 WelcomeView()
-                    .environmentObject(navigationPathStore)
             }
-            .navigationDestination(for: NavigationDestination.self) { destination in
-                switch destination {
-                case .chat:
-                    EmptyView()
-                case .inAppPurchase:
-                    InAppPurchaseView()
-                        .environmentObject(navigationPathStore)
-                }
-            }
-//            .environmentObject(navigationPathStore)
         }
         
     }
@@ -51,7 +35,6 @@ struct MyView: View {
                     isNavigating = true
                 }
 
-                // 숨겨진 NavigationLink (조건부 네비게이션용)
                 NavigationLink(
                     destination: InAppPurchaseView(),
                     isActive: $isNavigating

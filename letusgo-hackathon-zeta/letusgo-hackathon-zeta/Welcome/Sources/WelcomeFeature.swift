@@ -76,47 +76,37 @@ final class WelcomeViewModel: ObservableObject {
         case let .view(viewAction):
             switch viewAction {
             case let .characterTapped(character):
-                handleCharacterTapped(character)
+                break
             }
         }
     }
     
-    private func handleCharacterTapped(_ character: State.Character) {
-        switch character {
-        case .female:
-            continuation.yield(.path(.chat))
-        case .male:
-            continuation.yield(.path(.chat))
-        case .fairy:
-            continuation.yield(.path(.inAppPurchase))
-        }
-    }
 }
 
 struct WelcomeView: View {
-    @EnvironmentObject var navigationPathStore: NavigationPathStore
-    
     @StateObject var viewModel = WelcomeViewModel()
     
     var body: some View {
         HStack(spacing: 50) {
             ForEach(viewModel.characters, id: \.self) { character in
-                Button {
-                    viewModel.send(action: .characterTapped(character))
+                NavigationLink {
+                    switch character {
+                    case .male:
+                        ChatFeature()
+                        
+                    case .female:
+                        ChatFeature()
+                        
+                    case .fairy:
+                        InAppPurchaseView()
+                            .navigationTransition(.automatic)
+                    }
                 } label: {
                     CardView(character.displayText)
                 }
             }
         }
         .ignoresSafeArea()
-        .task {
-            for await event in viewModel.stream {
-                switch event {
-                case let .path(path):
-                    navigationPathStore.path.append(path)
-                }
-            }
-        }
     }
     
     /// 카드 뷰
