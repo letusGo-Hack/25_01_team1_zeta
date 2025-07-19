@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1AA7986F2E2B2B6C00637994 /* ReceiptParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7986E2E2B2B6C00637994 /* ReceiptParser */; };
-		1AA798712E2B2B6C00637994 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798702E2B2B6C00637994 /* RevenueCat */; };
-		1AA798732E2B2B6C00637994 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798722E2B2B6C00637994 /* RevenueCatUI */; };
-		1AA798752E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */; };
+		1AA7988D2E2B2E3C00637994 /* ReceiptParser in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7988C2E2B2E3C00637994 /* ReceiptParser */; };
+		1AA7988F2E2B2E3C00637994 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA7988E2E2B2E3C00637994 /* RevenueCat */; };
+		1AA798912E2B2E3C00637994 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AA798902E2B2E3C00637994 /* RevenueCatUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,10 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AA798712E2B2B6C00637994 /* RevenueCat in Frameworks */,
-				1AA7986F2E2B2B6C00637994 /* ReceiptParser in Frameworks */,
-				1AA798732E2B2B6C00637994 /* RevenueCatUI in Frameworks */,
-				1AA798752E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation in Frameworks */,
+				1AA7988F2E2B2E3C00637994 /* RevenueCat in Frameworks */,
+				1AA7988D2E2B2E3C00637994 /* ReceiptParser in Frameworks */,
+				1AA798912E2B2E3C00637994 /* RevenueCatUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,10 +121,9 @@
 			);
 			name = "letusgo-hackathon-zeta";
 			packageProductDependencies = (
-				1AA7986E2E2B2B6C00637994 /* ReceiptParser */,
-				1AA798702E2B2B6C00637994 /* RevenueCat */,
-				1AA798722E2B2B6C00637994 /* RevenueCatUI */,
-				1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */,
+				1AA7988C2E2B2E3C00637994 /* ReceiptParser */,
+				1AA7988E2E2B2E3C00637994 /* RevenueCat */,
+				1AA798902E2B2E3C00637994 /* RevenueCatUI */,
 			);
 			productName = "letusgo-hackathon-zeta";
 			productReference = 1AA7982A2E2B296D00637994 /* letusgo-hackathon-zeta.app */;
@@ -211,7 +208,7 @@
 			mainGroup = 1AA798212E2B296D00637994;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				1AA7988B2E2B2E3C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA7982B2E2B296D00637994 /* Products */;
@@ -590,7 +587,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+		1AA7988B2E2B2E3C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
 			requirement = {
@@ -601,25 +598,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1AA7986E2E2B2B6C00637994 /* ReceiptParser */ = {
+		1AA7988C2E2B2E3C00637994 /* ReceiptParser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = 1AA7988B2E2B2E3C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = ReceiptParser;
 		};
-		1AA798702E2B2B6C00637994 /* RevenueCat */ = {
+		1AA7988E2E2B2E3C00637994 /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = 1AA7988B2E2B2E3C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCat;
 		};
-		1AA798722E2B2B6C00637994 /* RevenueCatUI */ = {
+		1AA798902E2B2E3C00637994 /* RevenueCatUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = 1AA7988B2E2B2E3C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCatUI;
-		};
-		1AA798742E2B2B6C00637994 /* RevenueCat_CustomEntitlementComputation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1AA7986D2E2B2B6C00637994 /* XCRemoteSwiftPackageReference "purchases-ios" */;
-			productName = RevenueCat_CustomEntitlementComputation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
