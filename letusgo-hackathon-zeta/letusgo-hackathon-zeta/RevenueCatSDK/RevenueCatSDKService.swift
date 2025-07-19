@@ -7,3 +7,9 @@
 
 import Foundation
 import RevenueCat
+
+final class RevenueCatSDKService {
+    static let shared = RevenueCatSDKService()
+    
+    private init() {}
+}
