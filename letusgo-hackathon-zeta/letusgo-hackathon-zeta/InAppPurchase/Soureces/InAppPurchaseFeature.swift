@@ -105,6 +105,12 @@ final class InAppPurchaseViewModel: ObservableObject {
         
         enum ViewAction {
             case buyButtonTapped
+            case alert(AlertAction)
+            
+            enum AlertAction {
+                case purchaseSuccess
+                case purchaseFailure
+            }
         }
         
         enum AlertAction {
@@ -113,12 +119,19 @@ final class InAppPurchaseViewModel: ObservableObject {
         }
     }
     
-    func send(action: Action) {
+    func send(action: Action.ViewAction) {
+        send(action: .view(action))
+    }
+    
+    private func send(action: Action) {
         switch action {
         case let .view(viewAction):
             switch viewAction {
             case .buyButtonTapped:
                 handleBuyButtonTapped()
+                
+            case let .alert(alertAction):
+                handleAlertAction(action: alertAction)
             }
         
         case let .purchaseResult(result):
@@ -127,7 +140,7 @@ final class InAppPurchaseViewModel: ObservableObject {
                 handlePurchaseSucceeded()
                 
             case .failure(let failure):
-                handelPurchaseFailed(error: failure)
+                handlePurchaseFailed(error: failure)
             }
             
         case let .alert(alertAction):
@@ -161,24 +174,38 @@ final class InAppPurchaseViewModel: ObservableObject {
     }
     
     private func handlePurchaseSucceeded() {
-        state.purchaseAlert?.success = .init(
+        var purchaseAlert: State.PurchaseAlert = .init()
+        purchaseAlert.success = .init(
             title: "구매 완료",
             message: "영구 아이템 구매 완료"
         )
         
+        state.purchaseAlert = purchaseAlert
+        
         send(action: .alert(.showsPurchaseSuccess))
     }
     
-    private func handelPurchaseFailed(error: PurchaseError) {
-        var purchaseFailureAlert: State.PurchaseAlert = .init()
-        purchaseFailureAlert.failure = .init(
+    private func handlePurchaseFailed(error: PurchaseError) {
+        var purchaseAlert: State.PurchaseAlert = .init()
+        purchaseAlert.failure = .init(
             title: "구매 실패",
             message: error.localizedDescription
         )
 
-        state.purchaseAlert = purchaseFailureAlert
+        state.purchaseAlert = purchaseAlert
         
         send(action: .alert(.showsPurchaseFailure))
+    }
+    
+    private func handleAlertAction(action: Action.ViewAction.AlertAction) {
+        switch action {
+        case .purchaseSuccess:
+            state.purchaseAlert = nil
+            
+        case .purchaseFailure:
+            state.purchaseAlert = nil
+            
+        }
     }
     
 }
@@ -202,29 +229,23 @@ struct InAppPurchaseView: View {
         }
         .navigationTitle("RevenueCatSDK")
         .modifier(PurchaseFailureAlertModifier(
+            viewModel: viewModel,
             isPresented: $viewModel.purchaseFailureAlert,
             title: viewModel.state.purchaseAlert?.failure?.title ?? "",
             message: viewModel.state.purchaseAlert?.failure?.message ?? ""
         ))
         .modifier(PurchaseSuccessAlertModifier(
+            viewModel: viewModel,
             isPresented: $viewModel.purchaseSuccessAlert,
             title: viewModel.state.purchaseAlert?.success?.title ?? "",
             message: viewModel.state.purchaseAlert?.success?.message ?? ""
         ))
-//        .alert(
-//            viewModel.state.purchaseAlert?.failure?.title ?? "",
-//            isPresented: $viewModel.purchaseErrorAlert
-//        ) {
-//            Button("확인", role: .cancel) { }
-//        } message: {
-//            Text(viewModel.state.purchaseAlert?.failure?.message ?? "")
-//        }
     }
     
     /// 인앱 결제 버튼
     private var BuyButton: some View {
         Button {
-            viewModel.send(action: .view(.buyButtonTapped))
+            viewModel.send(action: .buyButtonTapped)
         } label: {
             Text("구매하기")
                 .padding(.horizontal, 16)
@@ -261,6 +282,7 @@ struct InAppPurchaseView: View {
 
 extension InAppPurchaseView {
     struct PurchaseFailureAlertModifier: ViewModifier {
+        let viewModel: InAppPurchaseViewModel
         @Binding var isPresented: Bool
         let title: String
         let message: String
@@ -268,7 +290,9 @@ extension InAppPurchaseView {
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
-                    Button("확인", role: .cancel) {}
+                    Button("확인", role: .cancel) {
+                        viewModel.send(action: .alert(.purchaseFailure))
+                    }
                 } message: {
                     Text(message)
                 }
@@ -276,6 +300,7 @@ extension InAppPurchaseView {
     }
     
     struct PurchaseSuccessAlertModifier: ViewModifier {
+        let viewModel: InAppPurchaseViewModel
         @Binding var isPresented: Bool
         let title: String
         let message: String
@@ -283,7 +308,9 @@ extension InAppPurchaseView {
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
-                    Button("확인", role: .cancel) {}
+                    Button("확인", role: .cancel) {
+                        viewModel.send(action: .alert(.purchaseSuccess))
+                    }
                 } message: {
                     Text(message)
                 }
