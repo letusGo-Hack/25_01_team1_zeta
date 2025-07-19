@@ -83,17 +83,35 @@ enum InAppPurchaseFeature {
             )
         }
     }
+    
+    enum ObservedEvent {
+        case dismiss
+    }
+    
 }
 
 @MainActor
 final class InAppPurchaseViewModel: ObservableObject {
     typealias PurchaseError = InAppPurchaseFeature.PurchaseError
     typealias State = InAppPurchaseFeature.State
+    typealias ObservedEvent = InAppPurchaseFeature.ObservedEvent
+    
+    private let continuation: AsyncStream<ObservedEvent>.Continuation
+    let stream: AsyncStream<ObservedEvent>
     
     /// 에러 알림
-    @Published var purchaseFailureAlert: Bool = false
+    @Published var purchaseFailureAlert: Bool
     /// 성공 알림
-    @Published var purchaseSuccessAlert: Bool = false
+    @Published var purchaseSuccessAlert: Bool
+    
+    init() {
+        let (stream, continuation) = AsyncStream<ObservedEvent>.makeStream()
+        self.stream = stream
+        self.continuation = continuation
+        
+        self.purchaseFailureAlert = false
+        self.purchaseSuccessAlert  = false
+    }
     
     /// 상태
     private(set) var state = State()
@@ -207,11 +225,12 @@ final class InAppPurchaseViewModel: ObservableObject {
             
         }
     }
-    
+
 }
 
 struct InAppPurchaseView: View {
     @StateObject private var viewModel = InAppPurchaseViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
@@ -240,8 +259,16 @@ struct InAppPurchaseView: View {
             title: viewModel.state.purchaseAlert?.success?.title ?? "",
             message: viewModel.state.purchaseAlert?.success?.message ?? ""
         ))
+        .task {
+            for await event in viewModel.stream {
+                switch event {
+                case .dismiss:
+                    dismiss()
+                }
+            }
+        }
     }
-    
+     
     /// 인앱 결제 버튼
     private var BuyButton: some View {
         Button {
