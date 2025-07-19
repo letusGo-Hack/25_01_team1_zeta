@@ -92,7 +92,7 @@ final class InAppPurchaseViewModel: ObservableObject {
 //    @Published var purchaseErrorAlert: Bool = false
     
     /// 상태
-    private var state = State()
+    private(set) var state = State()
     
     enum Action {
         case view(ViewAction)
@@ -193,13 +193,18 @@ struct InAppPurchaseView: View {
             BackgroundBlurView
         }
         .navigationTitle("RevenueCatSDK")
-        .alert("경고", isPresented: $viewModel.purchaseErrorAlert) {
+        .modifier(PurchaseAlertModifier(
+            isPresented: $viewModel.purchaseErrorAlert,
+            title: "결제 실패",
+            message: "다시 시도해 주세요."
+        ))
+        .alert(
+            viewModel.state.purchaseAlert?.failure?.title ?? "",
+            isPresented: $viewModel.purchaseErrorAlert
+        ) {
             Button("확인", role: .cancel) { }
-            Button("삭제", role: .destructive) {
-                print("삭제됨")
-            }
         } message: {
-            Text("정말 삭제하시겠습니까?")
+            Text(viewModel.state.purchaseAlert?.failure?.message ?? "")
         }
     }
     
@@ -238,5 +243,22 @@ struct InAppPurchaseView: View {
 #Preview {
     NavigationStack {
         InAppPurchaseView()
+    }
+}
+
+extension InAppPurchaseView {
+    struct PurchaseAlertModifier: ViewModifier {
+        @Binding var isPresented: Bool
+        let title: String
+        let message: String
+
+        func body(content: Content) -> some View {
+            content
+                .alert(title, isPresented: $isPresented) {
+                    Button("확인", role: .cancel) {}
+                } message: {
+                    Text(message)
+                }
+        }
     }
 }
