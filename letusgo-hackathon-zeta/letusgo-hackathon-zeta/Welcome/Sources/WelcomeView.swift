@@ -14,6 +14,8 @@ struct WelcomeView: View {
     
     /// 캐릭터 정보
     @State private var characters = FeatureState.Character.allCases
+    /// 결제 여부
+    @AppStorage("hasPurchased") var hasPurchased: Bool = false
     
     var body: some View {
         HStack(spacing: 50) {
@@ -29,8 +31,14 @@ struct WelcomeView: View {
                             .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .fairy:
-                        InAppPurchaseView()
-                            .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
+                        if hasPurchased {
+                            OnDeviceAIView(character: .fairy)
+                                .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
+                        } else {
+                            InAppPurchaseView()
+                                .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
+                        }
+                        
                     }
                 } label: {
                     CardView(character.displayText)

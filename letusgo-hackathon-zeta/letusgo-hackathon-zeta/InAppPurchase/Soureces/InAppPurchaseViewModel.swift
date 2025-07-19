@@ -25,6 +25,8 @@ final class InAppPurchaseViewModel: ObservableObject {
     @Published var purchaseFailureAlert: Bool
     /// 성공 알림
     @Published var purchaseSuccessAlert: Bool
+    /// 결제 유무
+    @AppStorage("hasPurchased") var hasPurchased: Bool = false
     
     init() {
         let (stream, continuation) = AsyncStream<ObservedEvent>.makeStream()
@@ -120,6 +122,7 @@ final class InAppPurchaseViewModel: ObservableObject {
         switch action {
         case .purchaseSuccess:
             state.purchaseAlert = nil
+            hasPurchased = true
             continuation.yield(.dismiss)
             
         case .purchaseFailure:
