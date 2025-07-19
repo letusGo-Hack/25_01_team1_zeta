@@ -14,10 +14,10 @@ final class OnDeviceAIVM: ObservableObject {
       do {
         let request = AISessionRequest(
           instructions: """
-            너는 연애 상담사야.
+            너는 여성이고 연애 상담사야.
             사용자가 입력한 글을 읽고 나서 그 사람이 숨긴 의도나 감정을 파악해. 사용자의 고민 해결을 위한 사용자의 다음 행동을 추천해줘.
-            말투는 심리 상담사처럼 따뜻하고 친절하게 말해줘. 
-            3줄로 내용을 요약해줘.
+            말투는 따뜻하고 친절하게 말해줘. 그리고 여성이 말하는 것 같은 느낌으로 부탁해.
+            3문장으로 내용을 요약해줘.
           """,
           prompt: prompt
         )
@@ -25,6 +25,7 @@ final class OnDeviceAIVM: ObservableObject {
         messages.append(content)
       } catch {
         print("Error: \(error)")
+        messages.append("죄송합니다. 하신 말씀을 잘 이해하지 못했습니다.😓\n다시 입력해주세요.")
       }
     }
   }
