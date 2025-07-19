@@ -5,9 +5,11 @@ import Combine
 
 @MainActor
 final class OnDeviceAIVM: ObservableObject {
-  @Published private(set) var aiMessage = ""
+  @Published private(set) var messages = [String]()
   
-  func getAIResponse() {
+  func getAIResponse(prompt: String) {
+    messages.append(prompt)
+    
     Task {
       do {
         let instructions = """
@@ -17,11 +19,10 @@ final class OnDeviceAIVM: ObservableObject {
           3줄로 내용을 요약해줘.
         """
         let session = LanguageModelSession(instructions: instructions)
-        let prompt = "내가 좋아하는 사람에게 먼저 문자가 왔어. 만나자고 말해볼까?"
         let response = try await session.respond(to: prompt)
-        aiMessage = response.content
+        messages.append(response.content)
       } catch {
-        aiMessage = "Error: \(error)"
+        print("Error: \(error)")
       }
     }
   }
@@ -30,17 +31,71 @@ final class OnDeviceAIVM: ObservableObject {
 struct OnDeviceAIView: View {
   @StateObject private var vm = OnDeviceAIVM()
   
+  @State private var messageText = ""
+  
   var body: some View {
+    Chat
+  }
+}
+
+private extension OnDeviceAIView {
+  var Chat: some View {
     VStack {
-      Text(LocalizedStringKey(vm.aiMessage))
+      // Header
+      
+      // Chat messages list
+      ScrollView {
+        VStack(spacing: 12) {
+          ForEach(vm.messages, id: \.self) { message in
+            HStack {
+              if message.count % 2 == 0 { // Example for user\'s message
+                Spacer()
+                Text(LocalizedStringKey(message))
+                  .padding(12)
+                  .foregroundColor(.white)
+                  .padding(.trailing)
+                
+              } else { // Example for other\'s message
+                Text(LocalizedStringKey(message))
+                  .padding(12)
+                  .foregroundColor(.white)
+                  .padding(.leading)
+                Spacer()
+              }
+            }
+          }
+        }
+        .padding(.horizontal)
+        .padding(.top, 8)
         .contentTransition(.opacity)
+      }
+      .animation(.easeInOut, value: vm.messages)
+      
+      // 메시지 입력 필드
+      HStack(spacing: 12) {
+        TextField("Type a message...", text: $messageText)
+          .padding(.horizontal, 20)
+          .padding(.vertical, 12)
+          .foregroundColor(.white)
+          .accentColor(.white)
+          .glassEffect()
+        
+        
+        Button {
+          vm.getAIResponse(prompt: messageText)
+        } label: { // 입력 버튼
+          Image(systemName: "arrow.up.circle.fill")
+            .font(.title)
+        }
+        .glassEffect() // Liquid Glass 적용
+        .disabled(messageText.isEmpty)
+      }
+      .padding()
     }
-    .padding(20)
-    .animation(.easeInOut, value: vm.aiMessage)
-    .task {
-      vm.getAIResponse()
-    }
-    .navigationTitle("Chat")
+    .background( // 그라데이션 적용
+      LinearGradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        .edgesIgnoringSafeArea(.all)
+    )
   }
 }
 
