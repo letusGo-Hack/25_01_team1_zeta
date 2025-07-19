@@ -11,7 +11,8 @@ import SwiftUI
 struct ZetaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            ChatFeature()
         }
     }
 }
