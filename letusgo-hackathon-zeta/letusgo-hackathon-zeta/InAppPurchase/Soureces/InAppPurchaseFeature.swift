@@ -49,26 +49,64 @@ enum InAppPurchaseFeature {
         }
     }
     
+    /// 구매 에러
     enum PurchaseError: Error {
+        case failedFetched
+        case failedPurchase
+    }
+    
+    /// 상태
+    struct State {
+        /// 구매 알럿
+        var purchaseAlert: PurchaseAlert? = nil
         
+//        struct PurchaseErrorAlert {
+//            var title: String
+//            var message: String
+//        }
+        
+        struct PurchaseAlert {
+            var failure: Failure?
+            var success: Success?
+            
+            struct Failure {
+                var title: String
+                var message: String
+            }
+            
+            struct Success {
+                var title: String
+                var message: String
+            }
+        }
     }
 }
 
 final class InAppPurchaseViewModel: ObservableObject {
     typealias PurchaseError = InAppPurchaseFeature.PurchaseError
+    typealias State = InAppPurchaseFeature.State
     
-    /// 상품정보
-    @Published var products = InAppPurchaseFeature.Product.allCases
+    /// 에러 알림
+    @Published var purchaseErrorAlert: Bool = false
+//    /// 에러 알림
+//    @Published var purchaseErrorAlert: Bool = false
+    
+    /// 상태
+    private var state = State()
     
     enum Action {
         case view(ViewAction)
-        case purchaseError(PurchaseError)
+        case purchaseResult(Result<Void, PurchaseError>)
+        case alert(AlertAction)
         
         enum ViewAction {
             case buyButtonTapped
         }
         
-        
+        enum AlertAction {
+            case showsPurchaseSuccess
+            case showsPurchaseFailure
+        }
     }
     
     func send(action: Action) {
@@ -76,11 +114,27 @@ final class InAppPurchaseViewModel: ObservableObject {
         case let .view(viewAction):
             switch viewAction {
             case .buyButtonTapped:
+                purchaseErrorAlert.toggle()
                 handleBuyButtonTapped()
             }
-        case let .purchaseError(error):
-            break
+        
+        case let .purchaseResult(result):
+            switch result {
+            case .success:
+                handlePurchaseSucceeded()
+                
+            case .failure(let failure):
+                handelPurchaseFailed(error: failure)
+            }
             
+        case let .alert(alertAction):
+            switch alertAction {
+            case .showsPurchaseSuccess:
+                purchaseErrorAlert.toggle()
+                
+            case .showsPurchaseFailure:
+                purchaseErrorAlert.toggle()
+            }
         }
     }
     
@@ -90,16 +144,34 @@ final class InAppPurchaseViewModel: ObservableObject {
             let fetchedProducts = await Purchases.shared.products([product])
             
             guard let product = fetchedProducts.first else {
-                // handle error
+                send(action: .purchaseResult(.failure(.failedFetched)))
                 return
             }
             
             do {
                 _ = try await Purchases.shared.purchase(product: product)
-            } catch let error {
-                // handle error
+            } catch {
+                send(action: .purchaseResult(.failure(.failedPurchase)))
             }
         }
+    }
+    
+    private func handlePurchaseSucceeded() {
+        state.purchaseAlert?.success = .init(
+            title: "구매 완료",
+            message: "영구 아이템 구매 완료"
+        )
+
+        send(action: .alert(.showsPurchaseSuccess))
+    }
+    
+    private func handelPurchaseFailed(error: PurchaseError) {
+        state.purchaseAlert?.failure = .init(
+            title: "구매 실패",
+            message: error.localizedDescription
+        )
+
+        send(action: .alert(.showsPurchaseFailure))
     }
 }
 
@@ -109,32 +181,26 @@ struct InAppPurchaseView: View {
     var body: some View {
         VStack {
             Spacer()
-            
             Image(.foundationmodel)
                 .resizable()
                 .frame(width: 256, height: 256)
-            
             Spacer()
             
             BuyButton
             
         }
         .background {
-            VStack {
-                Image(.foundationmodel)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 1000, height: 1000, alignment: .center)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .clipped()
-                    .blur(radius: 30)
-                    .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
-                
-                Spacer()
-            }
-            .ignoresSafeArea()
+            BackgroundBlurView
         }
         .navigationTitle("RevenueCatSDK")
+        .alert("경고", isPresented: $viewModel.purchaseErrorAlert) {
+            Button("확인", role: .cancel) { }
+            Button("삭제", role: .destructive) {
+                print("삭제됨")
+            }
+        } message: {
+            Text("정말 삭제하시겠습니까?")
+        }
     }
     
     /// 인앱 결제 버튼
@@ -150,6 +216,22 @@ struct InAppPurchaseView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
         }
+    }
+    
+    /// 배경
+    private var BackgroundBlurView: some View {
+        VStack {
+            Image(.foundationmodel)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 1000, height: 1000, alignment: .center)
+                .clipped()
+                .blur(radius: 30)
+                .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+            
+            Spacer()
+        }
+        .ignoresSafeArea()
     }
 }
 
