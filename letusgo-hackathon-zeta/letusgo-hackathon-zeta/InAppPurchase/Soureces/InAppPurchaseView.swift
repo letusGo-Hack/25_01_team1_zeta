@@ -13,79 +13,78 @@ struct InAppPurchaseView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ScrollView(.vertical) {
-                Spacer()
-                    .frame(height: 48)
-                
-                HStack {
-                    Text("LLM 기반 감정 이해")
-                        .font(.system(size: 24, weight: .semibold))
-                    Spacer()
-                }
-                .padding(.horizontal, 12)
-                
-                HStack {
-                    Image(.foundationmodel)
-                        .resizable()
-                        .frame(width: 256 / 3, height: 256 / 3)
-                    
-                    Text(
-                        """
-                        LLM 모델을 활용해 실제 연애 상담처럼 깊이 있는 조언과 공감을 전달합니다.
-                        """
-                    )
-                }
-                
-                Spacer()
-                    .frame(height: 48)
-                
-                HStack {
-                    Text("Apple Intelligence 연동")
-                        .font(.system(size: 24, weight: .semibold))
-                    Spacer()
-                }
-                .padding(.horizontal, 12)
-                
-                HStack {
-                    Image(.appleIntelligence)
-                        .resizable()
-                        .frame(width: 256 / 3, height: 256 / 3)
-                    
-                    Text(
-                    """
-                    애플 인텔리전스를 통해 사용자의 상황에 맞춘 정교하고 개인화된 대화를 제공합니다.
-                    """
-                    )
-                }
-                
-                Spacer()
-                    .frame(height: 48)
-                
-                HStack {
-                    Text("요정 연애 코치")
-                        .font(.system(size: 24, weight: .semibold))
-                    Spacer()
-                }
-                .padding(.horizontal, 12)
-                
-                HStack {
-                    Text("🧚")
-                        .font(.system(size: 256 / 4)) // 원하는 크기로 조절
-                        .frame(width: 256 / 3, height: 256 / 3)
-                    
-                    Text(
-                        """
-                        당신의 마음을 이해하고 애플 인텔리전스와 AI가 함께하는 따뜻하고 스마트한 연애 코칭 요정입니다.
-                        """
-                    )
-                }
-                
+            Spacer()
+//                .frame(height: 48)
+            
+            HStack {
+                Text("LLM 기반 감정 이해")
+                    .font(.system(size: 24, weight: .semibold))
                 Spacer()
             }
+            .padding(.horizontal, 12)
+            
+            HStack {
+                Image(.foundationmodel)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    LLM 모델을 활용해 실제 연애 상담처럼 깊이 있는 조언과 공감을 전달합니다.
+                    """
+                )
+            }
+            
+//            Spacer()
+//                .frame(height: 48)
+            
+            HStack {
+                Text("Apple Intelligence 연동")
+                    .font(.system(size: 24, weight: .semibold))
+                Spacer()
+            }
+            .padding(.horizontal, 12)
+            
+            HStack {
+                Image(.appleIntelligence)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                """
+                애플 인텔리전스를 통해 사용자의 상황에 맞춘 정교하고 개인화된 대화를 제공합니다.
+                """
+                )
+            }
+            
+//            Spacer()
+//                .frame(height: 48)
+            
+            HStack {
+                Text("요정 연애 코치")
+                    .font(.system(size: 24, weight: .semibold))
+                Spacer()
+            }
+            .padding(.horizontal, 12)
+            
+            HStack {
+                Text("🧚")
+                    .font(.system(size: 256 / 4)) // 원하는 크기로 조절
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    당신의 마음을 이해하고 애플 인텔리전스와 AI가 함께하는 따뜻하고 스마트한 연애 코칭 요정입니다.
+                    """
+                )
+            }
+            
+            Spacer()
             
             BuyButton
                 .padding(.bottom, 24)
         }
+        .padding(.horizontal, 12)
         .navigationTitle("RevenueCatSDK")
         .navigationBarTitleDisplayMode(.inline)
         .background {
@@ -130,17 +129,18 @@ struct InAppPurchaseView: View {
     /// 배경
     private var BackgroundBlurView: some View {
         VStack {
-            Image(.foundationmodel)
+            Image(.wwdc25)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 1000, height: 1000, alignment: .center)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                .frame(width: 1000, height: 1000, alignment: .center)
                 .clipped()
-                .blur(radius: 30)
+                .blur(radius: 10)
                 .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
             
             Spacer()
         }
-        .ignoresSafeArea()
+//        .ignoresSafeArea()
     }
 }
 
