@@ -6,8 +6,10 @@ import Combine
 @MainActor
 final class OnDeviceAIVM: ObservableObject {
   @Published private(set) var messages = [String]()
+  @Published private(set) var userMessages = [String]()
   
   func getAIResponse(prompt: String) {
+    userMessages.append(prompt)
     messages.append(prompt)
     
     Task {
@@ -37,69 +39,71 @@ struct OnDeviceAIView: View {
   @State private var messageText = ""
   
   var body: some View {
-    Chat
+    VStack(spacing: 10) {
+      ChatMessages
+      
+      InputField
+        .padding()
+    }
+    .background( // 그라데이션 적용
+      LinearGradient(
+        colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+      )
+      .edgesIgnoringSafeArea(.all)
+    )
   }
 }
 
 private extension OnDeviceAIView {
-  var Chat: some View {
-    VStack {
-      // Header
-      
-      // Chat messages list
-      ScrollView {
-        VStack(spacing: 12) {
-          ForEach(vm.messages, id: \.self) { message in
-            HStack {
-              if message.count % 2 == 0 { // Example for user\'s message
-                Spacer()
-                Text(LocalizedStringKey(message))
-                  .padding(12)
-                  .foregroundColor(.white)
-                  .padding(.trailing)
-                
-              } else { // Example for other\'s message
-                Text(LocalizedStringKey(message))
-                  .padding(12)
-                  .foregroundColor(.white)
-                  .padding(.leading)
-                
-                Spacer()
-              }
-            }
+  var ChatMessages: some View {
+    ScrollView {
+      VStack(spacing: 12) {
+        ForEach(vm.messages, id: \.self) { message in
+          HStack {
+            Text(LocalizedStringKey(message))
+              .foregroundStyle(vm.userMessages.contains(message) ? .blue : .green)
+              .frame(
+                maxWidth: .infinity,
+                alignment: vm.userMessages.contains(message) ?
+                  .trailing : .leading
+              )
+              .padding(12)
+              .glassEffect(in: RoundedRectangle(cornerRadius: 10))
           }
         }
-        .padding(.horizontal)
-        .padding(.top, 8)
-        .contentTransition(.opacity)
       }
-      .animation(.easeInOut, value: vm.messages)
-      
-      // 메시지 입력 필드
-      HStack(spacing: 12) {
-        TextField("Type a message...", text: $messageText)
-          .padding(.horizontal, 20)
-          .padding(.vertical, 12)
-          .foregroundColor(.white)
-          .accentColor(.white)
-          .glassEffect()
-        
-        Button {
-          vm.getAIResponse(prompt: messageText)
-          messageText = ""
-        } label: { // 입력 버튼
-          Image(systemName: "arrow.up.circle.fill")
-            .font(.title)
-        }
-        .glassEffect() // Liquid Glass 적용
-        .disabled(messageText.isEmpty)
-      }
-      .padding()
+      .padding(.horizontal)
+      .padding(.top, 8)
+      .contentTransition(.opacity)
     }
-    .background( // 그라데이션 적용
-      LinearGradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing)
-        .edgesIgnoringSafeArea(.all)
-    )
+    .animation(.easeInOut, value: vm.messages)
+  }
+  
+  var InputField: some View {
+    HStack(spacing: 12) {
+      TextField("메시지를 입력하세요 ...", text: $messageText)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 12)
+        .foregroundColor(.white)
+        .accentColor(.white)
+        .glassEffect()
+      
+      SendButton
+    }
+  }
+  
+  var SendButton: some View {
+    Button {
+      vm.getAIResponse(prompt: messageText)
+      messageText = ""
+    } label: { // 입력 버튼
+      Image(systemName: "arrow.up.circle.fill")
+        .font(.title)
+    }
+    .glassEffect() // Liquid Glass 적용
+    .disabled(messageText.isEmpty)
   }
 }
 
