@@ -40,47 +40,6 @@ enum WelcomeFeature {
         }
     }
     
-    enum ObservedEvent {
-        case path(NavigationDestination)
-    }
-}
-
-@MainActor
-final class WelcomeViewModel: ObservableObject {
-    typealias Action = WelcomeFeature.Action
-    typealias State = WelcomeFeature.State
-    typealias ObservedEvent = WelcomeFeature.ObservedEvent
-    
-    private let continuation: AsyncStream<ObservedEvent>.Continuation
-    let stream: AsyncStream<ObservedEvent>
-    
-    /// 캐릭터 정보
-    @Published var characters: State.Character.AllCases
-    
-    private(set) var state = State()
-    
-    init() {
-        let (stream, continuation) = AsyncStream<ObservedEvent>.makeStream()
-        self.stream = stream
-        self.continuation = continuation
-        
-        self.characters = State.Character.allCases
-    }
-    
-    func send(action: Action.ViewAction) {
-        send(action: .view(action))
-    }
-    
-    private func send(action: Action) {
-        switch action {
-        case let .view(viewAction):
-            switch viewAction {
-            case let .characterTapped(character):
-                break
-            }
-        }
-    }
-    
 }
 
 struct WelcomeView: View {
@@ -110,6 +69,7 @@ struct WelcomeView: View {
                 } label: {
                     CardView(character.displayText)
                         .matchedTransitionSource(id: character.displayText, in: namespace)
+                        .background(.clear)
                 }
             }
         }
@@ -121,17 +81,16 @@ struct WelcomeView: View {
         Text(text)
             .font(.largeTitle)
             .padding()
-            .glassEffect()
             .scaledToFit()
             .background(.clear)
+            .cornerRadius(20)
+            .glassEffect()
+            .clipShape(Circle())
     }
 }
 
 #Preview {
-    WelcomeView()
-}
-
-enum NavigationDestination: Hashable {
-    case chat
-    case inAppPurchase
+    NavigationStack {
+        WelcomeView()
+    }
 }
