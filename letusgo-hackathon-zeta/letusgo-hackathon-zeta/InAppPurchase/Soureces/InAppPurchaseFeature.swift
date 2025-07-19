@@ -219,6 +219,7 @@ final class InAppPurchaseViewModel: ObservableObject {
         switch action {
         case .purchaseSuccess:
             state.purchaseAlert = nil
+            continuation.yield(.dismiss)
             
         case .purchaseFailure:
             state.purchaseAlert = nil
