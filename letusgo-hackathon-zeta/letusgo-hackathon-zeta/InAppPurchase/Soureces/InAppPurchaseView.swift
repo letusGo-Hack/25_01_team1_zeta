@@ -12,16 +12,48 @@ struct InAppPurchaseView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack {
-            Spacer()
-            Image(.foundationmodel)
-                .resizable()
-                .frame(width: 256, height: 256)
+        VStack(alignment: .leading) {
+            //            Spacer()
+            //
+            Text("LLM 기반 감정 이해")
+                .font(.title)
+            
+            HStack {
+                Image(.foundationmodel)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    LLM 모델을 활용해 실제 연애 상담처럼 깊이 있는 조언과 공감을 전달합니다.
+                    """
+                )
+            }
+            
+            
+            Text("Apple Intelligence 연동")
+                .font(.title)
+            
+            
+            HStack {
+                Image(.appleIntelligence)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                """
+                애플 인텔리전스를 통해 사용자의 상황에 맞춘 정교하고 개인화된 대화를 제공합니다.
+                """
+                )
+            }
+            
+            
             Spacer()
             
             BuyButton
             
         }
+        .padding(.leading, 24)
         .background {
             BackgroundBlurView
         }
@@ -47,7 +79,7 @@ struct InAppPurchaseView: View {
             }
         }
     }
-     
+    
     /// 인앱 결제 버튼
     private var BuyButton: some View {
         Button {
@@ -86,7 +118,7 @@ fileprivate extension InAppPurchaseView {
         @Binding var isPresented: Bool
         let title: String
         let message: String
-
+        
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
@@ -104,7 +136,7 @@ fileprivate extension InAppPurchaseView {
         @Binding var isPresented: Bool
         let title: String
         let message: String
-
+        
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
