@@ -48,6 +48,11 @@ struct WelcomeView: View {
             }
         }
         .ignoresSafeArea()
+        .background {
+            BackgroundBlurView
+                .containerRelativeFrame(.horizontal)
+                .containerRelativeFrame(.vertical)
+        }
     }
     
     /// 카드 뷰
@@ -60,6 +65,23 @@ struct WelcomeView: View {
             .cornerRadius(20)
             .glassEffect()
             .clipShape(Circle())
+    }
+    
+    /// 배경
+    private var BackgroundBlurView: some View {
+        VStack {
+            Image(.wwdc25)
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                .frame(width: 1000, height: 1000, alignment: .center)
+                .clipped()
+                .blur(radius: 10)
+                .overlay(Color.black.opacity(0.2)) // 어두운 느낌 추가 (선택)
+            
+            Spacer()
+        }
+//        .ignoresSafeArea()
     }
 }
 
