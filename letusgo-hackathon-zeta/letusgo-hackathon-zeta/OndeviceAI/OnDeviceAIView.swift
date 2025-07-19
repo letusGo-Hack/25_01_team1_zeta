@@ -12,15 +12,17 @@ final class OnDeviceAIVM: ObservableObject {
     
     Task {
       do {
-        let instructions = """
-          너는 연애 상담사야.
-          사용자가 입력한 글을 읽고 나서 그 사람이 숨긴 의도나 감정을 파악해. 사용자의 고민 해결을 위한 사용자의 다음 행동을 추천해줘.
-          말투는 심리 상담사처럼 따뜻하고 친절하게 말해줘. 
-          3줄로 내용을 요약해줘.
-        """
-        let session = LanguageModelSession(instructions: instructions)
-        let response = try await session.respond(to: prompt)
-        messages.append(response.content)
+        let request = AISessionRequest(
+          instructions: """
+            너는 연애 상담사야.
+            사용자가 입력한 글을 읽고 나서 그 사람이 숨긴 의도나 감정을 파악해. 사용자의 고민 해결을 위한 사용자의 다음 행동을 추천해줘.
+            말투는 심리 상담사처럼 따뜻하고 친절하게 말해줘. 
+            3줄로 내용을 요약해줘.
+          """,
+          prompt: prompt
+        )
+        let content = try await OndeviceAIFeature.languageModelSessionRespond(request: request)
+        messages.append(content)
       } catch {
         print("Error: \(error)")
       }
@@ -60,6 +62,7 @@ private extension OnDeviceAIView {
                   .padding(12)
                   .foregroundColor(.white)
                   .padding(.leading)
+                
                 Spacer()
               }
             }
@@ -80,9 +83,9 @@ private extension OnDeviceAIView {
           .accentColor(.white)
           .glassEffect()
         
-        
         Button {
           vm.getAIResponse(prompt: messageText)
+          messageText = ""
         } label: { // 입력 버튼
           Image(systemName: "arrow.up.circle.fill")
             .font(.title)
