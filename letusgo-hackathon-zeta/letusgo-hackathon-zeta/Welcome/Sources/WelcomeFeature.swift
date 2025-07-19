@@ -22,7 +22,7 @@ enum WelcomeFeature {
     struct State {
         var characters: [Character]?
         
-        enum Character: CaseIterable {
+        enum Character: CaseIterable, Equatable {
             case male
             case female
             case fairy
@@ -84,25 +84,32 @@ final class WelcomeViewModel: ObservableObject {
 }
 
 struct WelcomeView: View {
-    @StateObject var viewModel = WelcomeViewModel()
+    typealias FeatureState = WelcomeFeature.State
+    @Namespace var namespace
+    
+    /// 캐릭터 정보
+    @State private var characters = FeatureState.Character.allCases
     
     var body: some View {
         HStack(spacing: 50) {
-            ForEach(viewModel.characters, id: \.self) { character in
+            ForEach(characters, id: \.self) { character in
                 NavigationLink {
                     switch character {
                     case .male:
                         ChatFeature()
+                            .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .female:
                         ChatFeature()
+                            .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                         
                     case .fairy:
                         InAppPurchaseView()
-                            .navigationTransition(.automatic)
+                            .navigationTransition(.zoom(sourceID: character.displayText, in: namespace))
                     }
                 } label: {
                     CardView(character.displayText)
+                        .matchedTransitionSource(id: character.displayText, in: namespace)
                 }
             }
         }
@@ -116,6 +123,7 @@ struct WelcomeView: View {
             .padding()
             .glassEffect()
             .scaledToFit()
+            .background(.clear)
     }
 }
 

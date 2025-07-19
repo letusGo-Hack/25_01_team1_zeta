@@ -13,7 +13,7 @@ struct ZetaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
+            NavigationStack {
                 WelcomeView()
             }
         }
@@ -29,7 +29,7 @@ struct MyView: View {
     @State private var isNavigating = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Button("구매 화면으로 이동") {
                     isNavigating = true
