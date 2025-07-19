@@ -20,6 +20,6 @@ struct ZetaApp: App {
     }
     
     init() {
-//        RevenueCatFeature.configure()
+        RevenueCatFeature.configure()
     }
 }
