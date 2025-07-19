@@ -12,16 +12,57 @@ struct InAppPurchaseView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack {
-            Spacer()
-            Image(.foundationmodel)
-                .resizable()
-                .frame(width: 256, height: 256)
-            Spacer()
+        VStack(alignment: .leading, spacing: 24) {
+            Text("LLM 기반 감정 이해")
+                .font(.title)
             
+            HStack {
+                Image(.foundationmodel)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    LLM 모델을 활용해 실제 연애 상담처럼 깊이 있는 조언과 공감을 전달합니다.
+                    """
+                )
+            }
+            
+            Text("Apple Intelligence 연동")
+                .font(.title)
+            
+            HStack {
+                Image(.appleIntelligence)
+                    .resizable()
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                """
+                애플 인텔리전스를 통해 사용자의 상황에 맞춘 정교하고 개인화된 대화를 제공합니다.
+                """
+                )
+            }
+            
+            Text("요정 연애 코치")
+                .font(.title)
+            
+            HStack {
+                Text("🧚")
+                    .font(.system(size: 256 / 4)) // 원하는 크기로 조절
+                    .frame(width: 256 / 3, height: 256 / 3)
+                
+                Text(
+                    """
+                    당신의 마음을 이해하고 애플 인텔리전스와 AI가 함께하는 따뜻하고 스마트한 연애 코칭 요정입니다.
+                    """
+                )
+            }
+            
+            Spacer()
             BuyButton
             
         }
+        .padding(.horizontal, 24)
         .background {
             BackgroundBlurView
         }
@@ -47,7 +88,7 @@ struct InAppPurchaseView: View {
             }
         }
     }
-     
+    
     /// 인앱 결제 버튼
     private var BuyButton: some View {
         Button {
@@ -86,7 +127,7 @@ fileprivate extension InAppPurchaseView {
         @Binding var isPresented: Bool
         let title: String
         let message: String
-
+        
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
@@ -104,7 +145,7 @@ fileprivate extension InAppPurchaseView {
         @Binding var isPresented: Bool
         let title: String
         let message: String
-
+        
         func body(content: Content) -> some View {
             content
                 .alert(title, isPresented: $isPresented) {
