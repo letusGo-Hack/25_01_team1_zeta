@@ -14,4 +14,8 @@ struct ZetaApp: App {
             ContentView()
         }
     }
+    
+    init() {
+        RevenueCatFeature.configure()
+    }
 }
