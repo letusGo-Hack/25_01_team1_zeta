@@ -15,4 +15,8 @@ struct ZetaApp: App {
             ChatFeature()
         }
     }
+    
+    init() {
+        RevenueCatFeature.configure()
+    }
 }
